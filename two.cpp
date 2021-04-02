@@ -1,21 +1,36 @@
-void helper(Node *root,int sum,int len,int &ms,int &ml){
-    if(root==NULL)
-    {
-        return;
-    }
-    if(root->left==NULL and root->right==NULL and len>=ml and sum+root->data>=ms)
-    {
-        ms = root->data+sum;
-        ml = len;
-        return;
-    }
-    helper(root->left,sum+root->data,len+1,ms,ml);
-    helper(root->right,sum+root->data,len+1,ms,ml);
+void solve(Node* root, int len, int sum, int &maxlen, int &maxsum)
+{
+if(root==NULL)
+{
+if(len>maxlen)
+{
+maxlen=len;
+maxsum=sum;
+}
+
+else if(len==maxlen)
+{
+if(sum>maxsum)
+maxsum=sum;
+}
+
+return;
+}
+
+solve(root->left, len+1, sum+root->data, maxlen, maxsum);
+solve(root->right, len+1, sum+root->data, maxlen, maxsum);
 }
 
 int sumOfLongRootToLeafPath(Node* root)
 {
-    int maximumsum=0,maximumlength=0;
-    helper(root,0,0,maximumsum,maximumlength);
-    return maximumsum;
+if(!root)
+return 0;
+
+int maxlen=0;
+int maxsum=INT_MIN;
+int len=0;
+ int sum=0;
+solve(root,len,sum,maxlen,maxsum);
+
+return maxsum;
 }
